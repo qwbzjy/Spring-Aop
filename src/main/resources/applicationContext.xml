@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--<bean id="hd" class="com.whut.spring.HelloWorld">-->
+        <!--<property name="name" value="spring"></property>-->
+    <!--</bean>-->
+
+    <!--&lt;!&ndash;1 配置对象&ndash;&gt;-->
+    <!--<bean id="book" class="com.qwb.spring.Book"></bean>-->
+    <!--<bean id="mybook" class="com.qwb.spring.MyBook"></bean>-->
+
+    <!--&lt;!&ndash;2 配置aop 操作&ndash;&gt;-->
+    <!--<aop:config>-->
+
+        <!--&lt;!&ndash;配置切入点&ndash;&gt;-->
+        <!--<aop:pointcut id="pointcut" expression="execution(* com.qwb.spring.Book.add())"></aop:pointcut>-->
+
+        <!--&lt;!&ndash;配置切面，把增强用到方法上&ndash;&gt;-->
+        <!--<aop:aspect ref="mybook">-->
+            <!--<aop:before method="before" pointcut-ref="pointcut" />-->
+            <!--<aop:around method="around" pointcut-ref="pointcut"/>-->
+            <!--<aop:after method="after" pointcut-ref="pointcut"/>-->
+
+        <!--</aop:aspect>-->
+    <!--</aop:config>-->
+    
+    
+    <bean id="helloWorldImpl1" class="com.trc.spring.HelloWorldImpl1"/>
+    <bean id="helloWorldImpl2" class="com.trc.spring.HelloWorldImpl2"/>
+    <bean id="timeHanler" class="com.trc.spring.TimeHandler"/>
+    <bean id="logHandler" class="com.trc.spring.LogHandler"/>
+
+    <aop:config>
+        <aop:aspect id="time" ref="timeHanler" order="1">
+            <aop:pointcut id="addAllMethod" expression="execution(* com.trc.spring.HelloWorld.*(..))" />
+            <aop:before method="printTime" pointcut-ref="addAllMethod"/>
+            <aop:after method="printTime" pointcut-ref="addAllMethod"/>
+        </aop:aspect>
+
+        <aop:aspect id="log" ref="logHandler" order="2">
+            <aop:pointcut id="printLog" expression="execution(* com.trc.spring.HelloWorld.*(..))"/>
+            <aop:before method="LogBefore" pointcut-ref="printLog"/>
+            <aop:after method="LogAfter" pointcut-ref="printLog"/>
+        </aop:aspect>
+                
+    </aop:config>
+
+
+
+</beans>
